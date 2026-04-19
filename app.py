@@ -2,6 +2,23 @@ import os
 import streamlit as st
 from PIL import Image
 
+import gdown
+
+def download_models():
+    os.makedirs("models", exist_ok=True)
+    if not os.path.exists("models/disease_model.h5"):
+        gdown.download(
+            "https://drive.google.com/uc?id=1ELYfgqoVrdhR6UFH7EkXk2GyHdfXoWae",
+            "models/disease_model.h5", quiet=False
+        )
+    if not os.path.exists("models/severity_model.h5"):
+        gdown.download(
+            "https://drive.google.com/uc?id=14_GPuRl3MjZZjpB2Fms4s5OG59Z_RWPB",
+            "models/severity_model.h5", quiet=False
+        )
+
+download_models()
+
 # ── Page config (HARUS paling atas) ──────────────────────────────────────────
 st.set_page_config(
     page_title="KentangSehat AI",
