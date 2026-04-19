@@ -6,9 +6,45 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.applications.resnet50 import preprocess_input
 
 
+def _safe_load_model(model_path: str):
+    """Load model dengan beberapa cara fallback untuk kompatibilitas TF versi beda."""
+    # Cara 1: compile=False (paling umum)
+    try:
+        return load_model(model_path, compile=False)
+    except Exception:
+        pass
+
+    # Cara 2: custom_objects untuk InputLayer yang tidak dikenal
+    try:
+        import tensorflow.keras as keras
+
+        class CompatInputLayer(keras.layers.InputLayer):
+            def __init__(self, *args, **kwargs):
+                kwargs.pop("batch_shape", None)
+                kwargs.pop("optional", None)
+                super().__init__(*args, **kwargs)
+
+        return load_model(
+            model_path,
+            compile=False,
+            custom_objects={"InputLayer": CompatInputLayer},
+        )
+    except Exception:
+        pass
+
+    # Cara 3: safe_mode=False (TF 2.16+)
+    try:
+        return load_model(model_path, compile=False, safe_mode=False)
+    except Exception:
+        pass
+
+    # Cara 4: tf.saved_model atau h5 legacy
+    return tf.keras.models.load_model(model_path, compile=False)
+
+
 def load_disease_model(model_path: str, json_path: str):
     """Load model penyakit + config dari file .h5 dan .json"""
-    model = load_model(model_path)
+    model = _safe_load_model(model_path)
     with open(json_path, "r") as f:
         config = json.load(f)
     return model, config
@@ -16,7 +52,7 @@ def load_disease_model(model_path: str, json_path: str):
 
 def load_severity_model(model_path: str, json_path: str):
     """Load model tingkat keparahan + config dari file .h5 dan .json"""
-    model = load_model(model_path)
+    model = _safe_load_model(model_path)
     with open(json_path, "r") as f:
         config = json.load(f)
     return model, config
