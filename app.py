@@ -504,15 +504,24 @@ if uploaded and run:
         pass
 
     elif not d_res["valid"]:
-        st.markdown(
-            '<div style="background:linear-gradient(135deg,#16a34a,#22c55e);padding:30px 80px">'
-            '<div class="rejection-box">'
-            '&#9888; <b>Input Ditolak</b><br><br>'
-            + d_res["reason"] +
-            '<br><small>Gunakan foto daun kentang yang jelas dengan pencahayaan cukup.</small>'
-            '</div></div>',
-            unsafe_allow_html=True,
-        )
+        # Notif inline — pakai kolom tengah agar rapi
+        col_nl, col_nc, col_nr = st.columns([1, 3, 1])
+        with col_nc:
+            st.markdown("""
+<div class="notif-invalid">
+  <div class="notif-icon">&#127807;</div>
+  <div class="notif-title">Bukan Gambar Daun Kentang</div>
+  <div class="notif-body">
+    Sistem tidak dapat mengenali gambar yang diunggah.<br>
+    Pastikan foto menampilkan <b>daun kentang</b> dengan pencahayaan yang cukup dan fokus pada daun.
+  </div>
+  <div class="notif-tips">
+    <div class="notif-tip">&#9679; Fokus pada daun, bukan batang atau tanah</div>
+    <div class="notif-tip">&#9679; Pencahayaan cukup, tidak terlalu gelap</div>
+    <div class="notif-tip">&#9679; Jarak dekat agar detail terlihat jelas</div>
+  </div>
+</div>
+""", unsafe_allow_html=True)
 
     else:
         # Langkah 1: hasil penyakit
@@ -629,14 +638,25 @@ if uploaded and run:
                 unsafe_allow_html=True,
             )
 
-        # 1. Jalankan animasi loading dan ambil data AI TERLEBIH DAHULU
-        with st.spinner("Menghasilkan rekomendasi dari AI..."):
-            try:
-                rec = get_gemini_recommendation(
-                    gemini_model, d_label, d_conf, s_label, s_conf
-                )
-            except Exception as e:
-                rec = f"Gagal menghubungi AI: {e}"
+        # Loading inline di dalam container gemini
+        gemini_slot = st.empty()
+        gemini_slot.markdown(
+            '<div class="gemini-box">'
+            '<div class="gemini-hdr">&#129302; &nbsp; Rekomendasi &amp; Penjelasan AI</div>'
+            '<div class="gemini-loading">'
+            '<div class="gemini-spinner"></div>'
+            '<span>Gemini AI sedang menganalisis dan menyusun rekomendasi...</span>'
+            '</div>'
+            '</div>',
+            unsafe_allow_html=True,
+        )
+        try:
+            rec = get_gemini_recommendation(
+                gemini_model, d_label, d_conf, s_label, s_conf
+            )
+        except Exception as e:
+            rec = f"Gagal menghubungi AI: {e}"
+        gemini_slot.empty()
 
 
         print("resc:", rec)  # debug output di console

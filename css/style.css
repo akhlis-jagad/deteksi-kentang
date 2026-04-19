@@ -927,3 +927,46 @@ iframe[title="st_player"] {
   display: none !important;
   height: 0 !important; padding: 0 !important;
 }
+/* ── Gemini inline loading ── */
+.gemini-loading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0 8px;
+  color: #6b7280;
+  font-size: .88rem;
+}
+
+.gemini-spinner {
+  width: 22px; height: 22px;
+  border: 3px solid #dcfce7;
+  border-top: 3px solid #22c55e;
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: popup-spin .8s linear infinite;
+}
+
+/* ── Notifikasi gambar bukan daun kentang (inline) ── */
+.notif-invalid {
+  background: #fef2f2;
+  border: 1.5px solid #fca5a5;
+  border-top: 5px solid #dc2626;
+  border-radius: 16px;
+  padding: 28px 24px 22px;
+  text-align: center;
+  margin: 16px 0;
+  box-shadow: 0 4px 20px rgba(220,38,38,.12);
+}
+.notif-icon  { font-size: 2.6rem; margin-bottom: 10px; }
+.notif-title { font-size: 1.1rem; font-weight: 800; color: #991b1b; margin-bottom: 8px; }
+.notif-body  { font-size: .87rem; color: #b91c1c; line-height: 1.6; margin-bottom: 14px; }
+.notif-tips  {
+  background: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  text-align: left;
+  display: inline-block;
+  width: 100%;
+}
+.notif-tip { font-size: .80rem; color: #b91c1c; margin-bottom: 5px; }
+.notif-tip:last-child { margin-bottom: 0; }

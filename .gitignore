@@ -1,5 +1,5 @@
 .streamlit/secrets.toml
-.venv/
+models/*.h5
 __pycache__/
 *.pyc
-models/*.h5
+.env
