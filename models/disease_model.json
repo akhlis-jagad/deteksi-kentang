@@ -1,0 +1,24 @@
+{
+  "classes": [
+    "Bacteria",
+    "Fungi",
+    "Healthy",
+    "Pest",
+    "Phytophthora",
+    "Virus"
+  ],
+  "indices": {
+    "0": "Bacteria",
+    "1": "Fungi",
+    "2": "Healthy",
+    "3": "Pest",
+    "4": "Phytophthora",
+    "5": "Virus"
+  },
+  "input_size": [
+    224,
+    224
+  ],
+  "model_name": "ResNet50",
+  "threshold": 0.6
+}

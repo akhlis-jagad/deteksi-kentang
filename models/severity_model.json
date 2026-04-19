@@ -1,0 +1,18 @@
+{
+  "classes": [
+    "Ringan",
+    "Sedang",
+    "Parah"
+  ],
+  "indices": {
+    "0": "Ringan",
+    "1": "Sedang",
+    "2": "Parah"
+  },
+  "input_size": [
+    224,
+    224
+  ],
+  "model_name": "ResNet50",
+  "threshold": 0.55
+}
