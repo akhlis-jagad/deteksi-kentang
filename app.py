@@ -2,22 +2,24 @@ import os
 import streamlit as st
 from PIL import Image
 
-import gdown
+from huggingface_hub import hf_hub_download
 
 def download_models():
     os.makedirs("models", exist_ok=True)
     if not os.path.exists("models/disease_model.h5"):
-        gdown.download(
-            "https://drive.google.com/uc?id=1ELYfgqoVrdhR6UFH7EkXk2GyHdfXoWae",
-            "models/disease_model.h5", quiet=False
+        hf_hub_download(
+            repo_id="akhlis-jagad/deteksi-kentang",
+            filename="disease_model.h5",
+            local_dir="models",
+            local_dir_use_symlinks=False,
         )
     if not os.path.exists("models/severity_model.h5"):
-        gdown.download(
-            "https://drive.google.com/uc?id=14_GPuRl3MjZZjpB2Fms4s5OG59Z_RWPB",
-            "models/severity_model.h5", quiet=False
+        hf_hub_download(
+            repo_id="akhlis-jagad/deteksi-kentang",
+            filename="severity_model.h5",
+            local_dir="models",
+            local_dir_use_symlinks=False,
         )
-
-download_models()
 
 # ── Page config (HARUS paling atas) ──────────────────────────────────────────
 st.set_page_config(
